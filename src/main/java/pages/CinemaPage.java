@@ -9,10 +9,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import steps.BaseSteps;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Predicate;
+
 
 /**
  * * Created by plotnikvk
@@ -20,9 +18,9 @@ import java.util.function.Predicate;
 
 public class CinemaPage extends BasePageObject {
 
-    WebDriverWait wait = new WebDriverWait(BaseSteps.getDriver(),10);
+    WebDriverWait wait = new WebDriverWait(BaseSteps.getDriver(), 10);
 
-    public CinemaPage(){
+    public CinemaPage() {
         PageFactory.initElements(BaseSteps.getDriver(), this);
     }
 
@@ -45,10 +43,10 @@ public class CinemaPage extends BasePageObject {
     public List<WebElement> cartsOfCinema;
 
     @FindBy(xpath = "//div[@class='event-rating__value']")
-    public WebElement ratingLink;
+    public List<WebElement> ratingList;
 
     @FindBy(xpath = "//h2[@class='event__name']")
-    public  WebElement name;
+    public WebElement name;
 
     @FindBy(xpath = "//div[@class='event__place']")
     public WebElement place;
@@ -64,19 +62,18 @@ public class CinemaPage extends BasePageObject {
     public WebElement placeOfFilm;
 
 
-
-    public void closeWindow(WebElement item){
-        try{
+    public void closeWindow(WebElement item) {
+        try {
             wait.until(ExpectedConditions.visibilityOf(item));
             item.click();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public void selectDateItem(String itemName){
-        for (WebElement item : selectWhenDate ){
-            if (item.getText().equalsIgnoreCase(itemName)){
+
+    public void selectDateItem(String itemName) {
+        for (WebElement item : selectWhenDate) {
+            if (item.getText().equalsIgnoreCase(itemName)) {
                 item.click();
                 return;
             }
@@ -84,20 +81,36 @@ public class CinemaPage extends BasePageObject {
         Assert.fail("Не найден элмент коллеции - " + itemName);
     }
 
-    public void selectFilm(float rating) {
-        for (WebElement item : cartsOfCinema ){
-            if (item.getText().contains(ratingLink.getText())){
-                if(Float.parseFloat(item.findElement(By.xpath("//div[@class='event-rating__value']")).getText()) >= rating){
+    public void selectFilm(double rating) {
 
-                   nameOfFilms = item.findElement((By) name).getText();
-                    placeOfFilms = item.findElement((By) place).getText();
-                   WebElement film = item.findElement(By.xpath("//div[@class='event__inner']/a"));
-                   film.click();
+        for (WebElement item : cartsOfCinema) {
+            int i = maxRatingSearch(rating);
+            if (item.getText().contains(ratingList.get(i).getText())) {
+
+                WebElement film = item.findElement(By.xpath("//div[@class='event__inner']/a"));
+                film.click();
+                nameOfFilms = item.findElement(By.xpath("//h2[@class='event__name']")).getText();
+                placeOfFilms = item.findElement(By.xpath("//div[@class='event__place']")).getText();
                 return;
-                }
             }
+            i++;
         }
     }
+
+    public int maxRatingSearch(double rating) {
+        int maxIndex = 0;
+        int i = 0;
+        for (WebElement item : ratingList) {
+         if(Double.parseDouble(item.getText()) >= rating){
+             maxIndex=i;
+         }
+             i++;
+        }
+
+        return maxIndex;
+    }
+
+
 
     public void checkNameAndPlace(){
         Assert.assertEquals("Имя фильма не соответствует сохраненному",nameOfFilms,nameOfFilm.getText());

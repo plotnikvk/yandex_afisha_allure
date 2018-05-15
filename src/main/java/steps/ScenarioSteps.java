@@ -34,7 +34,7 @@ public class ScenarioSteps {
     public void selectDate(String date){cinemaSteps.selectDate(date);
     }
     @When("найден фильм с рейтингом >= \"(.+)\"$")
-    public void selectFilm(String rating){cinemaSteps.selectFilm(Float.parseFloat(rating));
+    public void selectFilm(String rating){cinemaSteps.selectFilm(Double.parseDouble(rating));
     }
 
     @Then("проверены название фильма и количество кинотеатров")

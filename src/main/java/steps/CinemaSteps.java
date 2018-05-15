@@ -1,13 +1,13 @@
 package steps;
 
 import io.qameta.allure.Step;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.CinemaPage;
 
 import static org.junit.Assert.assertTrue;
+
 /**
  * * Created by plotnikvk
  */
@@ -35,7 +35,7 @@ WebDriverWait wait = new WebDriverWait(BaseSteps.getDriver(),5);
     }
 
     @Step("выбран фильм с рейтингом - >= {0}")
-    public void selectFilm(float rating){cinemaPage.selectFilm(rating);
+    public void selectFilm(double rating){cinemaPage.selectFilm(rating);
     }
 
     @Step("проверены название фильма и количество кинотеатров")

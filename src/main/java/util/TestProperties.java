@@ -5,6 +5,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * Created by plotnikvk
+ */
+
 public class TestProperties {
     private final Properties properties = new Properties();
 
