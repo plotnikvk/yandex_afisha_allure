@@ -93,7 +93,6 @@ public class CinemaPage extends BasePageObject {
                 placeOfFilms = item.findElement(By.xpath("//div[@class='event__place']")).getText();
                 return;
             }
-            i++;
         }
     }
 
